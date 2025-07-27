@@ -3,11 +3,11 @@ kind: Deployment
 metadata:
   name: mongodb
   namespace: roboshop
-  # replica set labels
+  # deployment labels
   labels:
     component: mongodb
     project: roboshop
-    tier: backend
+    tier: database
 spec:
   replicas: 1
   # These are the labels replica set use to create pod replicas, this should match pod labels
@@ -15,18 +15,18 @@ spec:
     matchLabels:
       component: mongodb
       project: roboshop
-      tier: backend
+      tier: database
   # This is pod definition
   template:
     metadata:
       labels:
         component: mongodb
         project: roboshop
-        tier: backend
+        tier: database
     spec:
       containers:
       - name: mongodb
-        image: iamrams/mongodb:v1
+        image: joindevops/mongodb:v1
 ---
 apiVersion: v1
 kind: Service
@@ -36,13 +36,13 @@ metadata:
   labels:
     component: mongodb
     project: roboshop
-    tier: backend
+    tier: database
 spec:
   selector:
     component: mongodb
     project: roboshop
-    tier: backend
+    tier: database
   ports:
-    - protocol: TCP
-      port: 27017 # service port
-      targetPort: 27017 # container port
+  - protocol: TCP
+    port: 27017 # service port
+    targetPort: 27017 # container port
